@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public float rotateSpeed = 75f;
     public float jumpForce;
     public Rigidbody rig;
+    public int health;
 
     public int coinCount;
 
@@ -25,7 +26,8 @@ public class PlayerController : MonoBehaviour
 
         // Set that as our velocity
         rig.velocity = dir;
-        rig.MoveRotation(rig.rotation * angleRot);
+        
+        //rig.MoveRotation(rig.rotation * angleRot);
     }
 
     void TryJump()

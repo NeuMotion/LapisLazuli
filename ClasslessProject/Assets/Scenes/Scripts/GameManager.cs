@@ -24,9 +24,14 @@ public class GameManager : MonoBehaviour
     public int countdown;
     public TMP_Text countdownText;
 
+    [Header("End Screen UI")]
+    public TMP_Text endUI_score;
+    public TMP_Text endUI_time;
+
     [Header("Screens")]
     public GameObject countdownUI;
     public GameObject gameUI;
+    public GameObject endUI;
 
     // Start is called before the first frame update
     void Start()
@@ -70,6 +75,11 @@ public class GameManager : MonoBehaviour
 
     void startGame()
     {
+
+        // Locks cursor
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         // Set the screen to see stats
         SetScreen(gameUI);
 
@@ -85,6 +95,23 @@ public class GameManager : MonoBehaviour
         // Disable player movement
         player.enabled = false;
 
+        // Set UI to display stats
+        endUI_time.text = "Total Speedrun Time: " + (time * 1).ToString("F2");
+        endUI_score.text = "Ender Pearls Collected: " + player.coinCount;
+
+        // Unlocks cursor
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        
+        SetScreen(endUI);
+
+    }
+
+    public void OnRestartButton()
+    {
+        // Restart the game to play again
+        SceneManager.LoadScene(0);
     }
 
     // Update is called once per frame
@@ -99,7 +126,7 @@ public class GameManager : MonoBehaviour
         // Set UI to display stats
         gameUI_score.text = "Ender Pearls: " + player.coinCount;
         gameUI_health.text = "Hearts: " + player.health;
-        gameUI_time.text = "Speedrun Clock: " + (time * 10).ToString("F2");
+        gameUI_time.text = "Speedrun Clock: " + (time * 1).ToString("F2");
     }
 
     public void SetScreen(GameObject screen)
@@ -107,6 +134,7 @@ public class GameManager : MonoBehaviour
         // Disable all other screens
         gameUI.SetActive(false);
         countdownUI.SetActive(false);
+        endUI.SetActive(false);
 
         // Activate the requested screen
         screen.SetActive(true);

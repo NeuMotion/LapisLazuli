@@ -360,6 +360,7 @@
 -analyzer:"C:/Program Files/Unity/Hub/Editor/2022.3.60f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"C:/Program Files/Unity/Hub/Editor/2022.3.60f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Scenes/Scripts/CameraController.cs"
+"Assets/Scenes/Scripts/EnemyBehavior.cs"
 "Assets/Scenes/Scripts/FinishLine.cs"
 "Assets/Scenes/Scripts/GameManager.cs"
 "Assets/Scenes/Scripts/Pickups.cs"

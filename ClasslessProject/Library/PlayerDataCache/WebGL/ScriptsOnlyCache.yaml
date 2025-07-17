@@ -1,6 +1,7 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - CameraController
     - EnemyBehavior
     - FinishLine
     - GameManager
@@ -13,6 +14,8 @@ ScriptsOnlyBuild:
     - Cinemachine.CinemachineOrbitalTransposer
     - Cinemachine.CinemachinePipeline
     - Cinemachine.CinemachineVirtualCamera
+    Unity.AI.Navigation.Editor.dll:
+    - Unity.AI.Navigation.Editor.NavMeshAssetManager
     Unity.AI.Navigation.dll:
     - Unity.AI.Navigation.NavMeshSurface
     Unity.Rider.Editor.dll:
@@ -24,6 +27,9 @@ ScriptsOnlyBuild:
     - TMPro.TMP_StyleSheet
     Unity.TextMeshPro.dll:
     - TMPro.TMP_FontAsset
+    - TMPro.TMP_Settings
+    - TMPro.TMP_SpriteAsset
+    - TMPro.TMP_StyleSheet
     - TMPro.TextMeshProUGUI
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
@@ -120,6 +126,10 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 82
+      Script: {instanceID: 0}
+    - Class: 83
+      Script: {instanceID: 0}
     - Class: 89
       Script: {instanceID: 0}
     - Class: 91
@@ -136,6 +146,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 1782}
     - Class: 114
       Script: {instanceID: 2250}
+    - Class: 114
+      Script: {instanceID: 2604}
     - Class: 114
       Script: {instanceID: 2616}
     - Class: 114
@@ -481,7 +493,7 @@ ScriptsOnlyBuild:
     className: UnityOnDropdownValueChangedMessageListener
   - hash:
       serializedVersion: 2
-      Hash: 55cfd525faf1ccc767094ab8831ea3ff
+      Hash: cc363f01ea19ac35a5d8133cd089e0dc
     assemblyName: Assembly-CSharp
     namespaceName: 
     className: PlayerController

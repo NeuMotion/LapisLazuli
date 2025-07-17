@@ -7,16 +7,29 @@ using Input = UnityEngine.Input;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Stats")]
     public float moveSpeed;
     public float rotateSpeed = 75f;
     public float jumpForce;
-    public Rigidbody rig;
-    public int health;
-    public bool isSprinting;
-    public Animator anim;
-    public bool isGrounded;
+    public AudioSource voice;
+    public AudioSource bgMusic;
+    public AudioClip erclip;
 
+    [Header("Components")]
+    public Rigidbody rig;
+    ////////////////////////////
+    public GameObject playerObj;
+    ////////////////////////////
+    public Animator anim;
+
+    [Header("Statistics")]
+    public int health;
     public int coinCount;
+
+    [Header("Animation Booleans")]
+    public bool isSprinting;
+    public bool isGrounded;
+    public bool isIdle;
 
     void Move()
     {
@@ -24,6 +37,18 @@ public class PlayerController : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
+        //////////////////////////////////////////////////////////////////////////////////
+        Vector3 moveDir = playerObj.transform.forward * z + playerObj.transform.right * x;
+        rig.AddForce(moveDir.normalized * moveSpeed * 10f, ForceMode.Force);
+        Vector3 flatVel = new Vector3(rig.velocity.x, 0f, rig.velocity.z);
+        // Limit velocity if needed
+        if (flatVel.magnitude > moveSpeed)
+        {
+            Vector3 limitedVel = flatVel.normalized * moveSpeed;
+            rig.velocity = new Vector3(limitedVel.x, rig.velocity.y, limitedVel.z);
+        }
+        //////////////////////////////////////////////////////////////////////////////////
+        
         //isGrounded = CheckIsGrounded();
         if (CheckIsGrounded())
         {
@@ -40,7 +65,7 @@ public class PlayerController : MonoBehaviour
             // Set 
             isSprinting = true;
             anim.SetBool("isSprinting", true);
-            moveSpeed += 10;
+            moveSpeed += 3;
             jumpForce += 1;
         }
         if (Input.GetKeyUp(KeyCode.LeftShift))
@@ -48,10 +73,32 @@ public class PlayerController : MonoBehaviour
             // Disable
             isSprinting = false;
             anim.SetBool("isSprinting", false);
-            moveSpeed -= 10;
+            moveSpeed -= 3;
             jumpForce -= 1;
         }
-        Vector3 rotation = Vector3.up * x;
+
+        //Dance button stuff
+        if (Input.GetKeyDown(KeyCode.E)) 
+        {
+            bgMusic.Stop();
+            voice.clip = erclip;
+            voice.Play();
+            anim.SetBool("isIdle", true);
+            anim.SetBool("isTwerking", true);
+        }
+        if (Input.GetKeyUp(KeyCode.E))
+        {
+            voice.clip = erclip;
+            voice.Stop();
+            bgMusic.Play();
+            anim.SetBool("isIdle", true);
+            anim.SetBool("isTwerking", false);
+        }
+        
+        /* Vector3 rotation = Vector3.up * x; */
+        
+
+        /* COMMENTED OUT FOR A GAME TEST
         Quaternion angleRot = Quaternion.Euler(rotation * Time.fixedDeltaTime);
 
         // Calculate a direction relative to where we are facing
@@ -61,7 +108,9 @@ public class PlayerController : MonoBehaviour
         // Set that as our velocity
         rig.velocity = dir;
         
-        /* rig.MoveRotation(rig.rotation * angleRot); */
+        // rig.MoveRotation(rig.rotation * angleRot); 
+        END OF REDACTED AREA */
+
 
         // Move = play run animation, otherwise not
         if(Mathf.Abs(x) > 0.1f || Mathf.Abs(z) > 0.1f)

@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.Find("Steve").GetComponent<PlayerController>();
+        /* player = GameObject.Find("Steve").GetComponent<PlayerController>(); */
 
         // Make sure the timer is set to zero
         time = 0;
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator CountDownRoutine()
     {
-        countdownText.gameObject.SetActive(true);
+       countdownText.gameObject.SetActive(true);
         countdown = 3;
         while (countdown > 0)
         {

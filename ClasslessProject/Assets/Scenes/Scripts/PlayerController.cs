@@ -12,8 +12,9 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     public Rigidbody rig;
     public int health;
-
+    public bool isSprinting;
     public Animator anim;
+    public bool isGrounded;
 
     public int coinCount;
 
@@ -22,6 +23,34 @@ public class PlayerController : MonoBehaviour
         // Get the input axis
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
+
+        //isGrounded = CheckIsGrounded();
+        if (CheckIsGrounded())
+        {
+            isGrounded = true;
+            anim.SetTrigger("isLanded");
+        }
+        else
+        {
+            isGrounded = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            // Set 
+            isSprinting = true;
+            anim.SetBool("isSprinting", true);
+            moveSpeed += 10;
+            jumpForce += 1;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            // Disable
+            isSprinting = false;
+            anim.SetBool("isSprinting", false);
+            moveSpeed -= 10;
+            jumpForce -= 1;
+        }
         Vector3 rotation = Vector3.up * x;
         Quaternion angleRot = Quaternion.Euler(rotation * Time.fixedDeltaTime);
 
@@ -45,15 +74,27 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public bool CheckIsGrounded()
+    {
+        return rig.velocity.y < 0.1;
+    }
+
     void TryJump()
     {
+
         // Create a ray facing down
         Ray ray = new Ray(transform.position, Vector3.down);
 
-        // Shoot the raycast
-        if (Physics.Raycast(ray, 1.5f)) {
+        // Shoot the raycast & tests for sprint jumping
+        if (Physics.Raycast(ray, 1.5f) && !isSprinting) {
             anim.SetTrigger("isJumping");
             rig.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+        }
+        if (Physics.Raycast(ray, 1.5f) && isSprinting) {
+            anim.SetTrigger("isSprintJumping");
+            rig.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
         }
     }
 
@@ -84,15 +125,15 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator DieButCool()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(2.5f);
         SceneManager.LoadScene(0);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.name == "Enemy")
+        if(other.gameObject.name == "Killider")
         {
-            health -= 5;
+            health -= 2;
         }
         if(other.gameObject.name == "FallCollider")
         {

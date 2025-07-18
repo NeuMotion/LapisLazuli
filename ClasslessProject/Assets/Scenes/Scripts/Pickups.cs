@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Pickups : MonoBehaviour
 {
+
     // Reference to player
     public PlayerController player;
 
@@ -20,8 +21,15 @@ public class Pickups : MonoBehaviour
         if (other.name == "Steve")
         {
             player.coinCount++;
+
+            PlayerController play = other.GetComponent<PlayerController>();
+            if (play != null)
+            {
+                play.PlayCollectSound();
+            }
+
             Destroy(this.gameObject);
+
         }
     }
-
 }

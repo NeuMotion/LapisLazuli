@@ -13,7 +13,12 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     public AudioSource voice;
     public AudioSource bgMusic;
-    public AudioClip erclip;
+    public AudioClip lavaChx;
+    public AudioClip imSteve;
+    public AudioClip oldOw;
+    public AudioClip newOw;
+    public AudioClip letsPlay;
+    public AudioClip endPearl;
 
     [Header("Components")]
     public Rigidbody rig;
@@ -77,26 +82,52 @@ public class PlayerController : MonoBehaviour
             jumpForce -= 1;
         }
 
-        //Dance button stuff
+        // Dance button stuff
         if (Input.GetKeyDown(KeyCode.E)) 
         {
             bgMusic.Stop();
-            voice.clip = erclip;
+            voice.clip = lavaChx;
             voice.Play();
             anim.SetBool("isIdle", true);
             anim.SetBool("isTwerking", true);
         }
         if (Input.GetKeyUp(KeyCode.E))
         {
-            voice.clip = erclip;
+            voice.clip = lavaChx;
             voice.Stop();
             bgMusic.Play();
             anim.SetBool("isIdle", true);
             anim.SetBool("isTwerking", false);
         }
-        
+
+        // Audio clip stuff
+        // Q for I am Steve
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            voice.clip = imSteve;
+            voice.Play();
+        }
+        if (Input.GetKeyUp(KeyCode.Q))
+        {
+            voice.clip = imSteve;
+            voice.Stop();
+        }
+        // Z for Indian kid
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            bgMusic.Stop();
+            voice.clip = letsPlay;
+            voice.Play();
+        }
+        if (Input.GetKeyUp(KeyCode.Z))
+        {
+            bgMusic.Play();
+            voice.clip = letsPlay;
+            voice.Stop();
+        }
+
         /* Vector3 rotation = Vector3.up * x; */
-        
+
 
         /* COMMENTED OUT FOR A GAME TEST
         Quaternion angleRot = Quaternion.Euler(rotation * Time.fixedDeltaTime);
@@ -113,13 +144,21 @@ public class PlayerController : MonoBehaviour
 
 
         // Move = play run animation, otherwise not
-        if(Mathf.Abs(x) > 0.1f || Mathf.Abs(z) > 0.1f)
+        if (Mathf.Abs(x) > 0.1f || Mathf.Abs(z) > 0.1f)
         {
             anim.SetBool("isRunning", true);
         }
         else
         {
             anim.SetBool("isRunning", false);
+        }
+    }
+
+    public void PlayCollectSound()
+    {
+        if (endPearl != null && voice != null)
+        {
+            voice.PlayOneShot(endPearl);
         }
     }
 
@@ -150,7 +189,10 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (voice  != null)
+        {
+            voice = GetComponent<AudioSource>();
+        }
     }
 
     // Update is called once per frame
@@ -178,15 +220,20 @@ public class PlayerController : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
+    public float DelayBeforeReload = 0.5f;
+
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.name == "Killider")
+        if (other.gameObject.name == "Killider")
         {
             health -= 2;
+            voice.PlayOneShot(newOw);
         }
         if(other.gameObject.name == "FallCollider")
         {
-            SceneManager.LoadScene(0);
+            voice.PlayOneShot(oldOw);
+            playerObj.GetComponent<RagdollController>().EnableRagdoll();
+            StartCoroutine("DieButCool");
         }
     }
 }

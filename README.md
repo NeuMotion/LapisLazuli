@@ -1,3 +1,3 @@
 # LapisLazuli
 
-https://neumotion.github.io/NEWClasslessProject/
+https://neumotion.github.io/LapisLazuli/
